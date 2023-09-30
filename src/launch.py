@@ -64,26 +64,20 @@ def launch_angle(ve_v0, alpha):
     -------
     float 
         Launch angle from vetical in radians
-    
-    Raises
-    ------
-    ValueError
-        If invalid combination of ve_v0 and alpha is resulted
-
-    **ve_v0 < 1.0 (this is means that we have started with more than enough velocity)
-
-    **alpha has to be <= 1/ (ve_v0**2 - 1)
-    ---> ValueError if this is not the case
     """
+    #Value what don't work
+    #relative velocities
     if ve_v0 > 1.0: 
         raise ValueError(f"invalid value ve_v0 = {ve_v0} > 1.0") #if we start with less velocity than needed, we can't escape
-    d = 1.0 - (alpha / (1.0 + alpha)) * ve_v0**2
-    if d < 0.0: #we can't go back into the earth/d can't be negative be of sqrt
-        alpha_max = 1.0 / (ve_v0**2 - 1)
-        raise ValueError(f"invalid value alpha = {alpha} > {alpha_max}")
-    x = (1.0 + alpha)*np.sqrt(d)
+    
+    #break up equation 17
+    q = 1.0 - (alpha / (1.0 + alpha)) * ve_v0**2
 
-    return arcsin(x)
+    x = (1.0 + alpha)*np.sqrt(q)
+
+    y = arcsin(x)
+
+    return y
 
 
 def launch_angle_range(ve_v0, alpha, tol_alpha):
@@ -91,19 +85,31 @@ def launch_angle_range(ve_v0, alpha, tol_alpha):
     velocity ratio, target altitude ratio, and tolerance.
     Perameters
     ----------
-    
+    Ration of escape velocity to termonal velocity
+    ve_v0 : float 
+
+    Ratio of the target altitude relative to the Earth's radius
+    alpha : float
+
+    Tolerance for Alpha 
+    tol_alpha : float
+
     Returns
     -------
     float:
         launch angle range will be given in radians
-    Raises
-    ------
-    ve_v0 >= 1.0 
-        To escape we need atleast the escape velocity 
-    alpha <= 1/(ve_v0**2 - 1)
     """
+    max_altitude = (1 + tol_alpha) * alpha
+    min_altitude = (1 - tol_alpha) * alpha
+
+    #min launch angle from max altitude
+    min_angle = launch_angle(ve_v0,max_altitude)
+                                                      #launch angle uses arcsin (implementation of equation 17 and 18)
+    #max launch angle from min altitude
+    max_angle = launch_angle(ve_v0,min_altitude)
     
-    phi_range = 5
+    phi_range = np.array(min_angle,max_angle)
+    
     return phi_range
 
 
@@ -112,28 +118,18 @@ def min_altitude_ratio(ve_v0):
     for a given velocity ratio.
     Perameters
     ----------
-    ve_v0 = 1.0
-        The minimum required velocity to escape
-    R = 6378100 (in meters)
+    sin(x) = 1 (x=pi/2)
+        Angle when leaving is horizontal
+
     Reterns
     -------
     float :
-        min_altitude_ratio will be given in meters
-    Raises
-    ------
-    d < R
-        Then the ratio is now into the ground lol
-    ve_v0 < 1
-        No longer the min altitude
-
+        min_altitude_ratio will be given in ratio no units
     """
-    R = 6378100
-    d = 1 + 1/(ve_v0**2-1)
-    if d < 6378100:
-        raise ValueError(f"invalid value {ve_v0}<1")
-    dmin_R = d / R
+    alpha_min = (-(ve_v0) ** 2 + 2) / ((ve_v0) ** 2 - 1)
 
-    return ...
+    #ve_v0  cannot be 0 (0 escape velocity?) and cannot be 1
+    return alpha_min
 
 
 def max_altitude_ratio(ve_v0):
@@ -141,25 +137,17 @@ def max_altitude_ratio(ve_v0):
     for a given velocity ratio.
     Perameters
     ----------
-    ve_v0 = 0.0
-        We have more initial velocity than needed to escape
+    sin(x) = 0
+        Angle when leaving is vertical
     Reterns
     -------
     float:
-        max_altitude_ratio will be given in (m)
+        max_altitude_ratio will be given in ratio no units
 
-    Raises
-    ------
-    ve_v0 > 0
-        anything bigger than 0 will not give the max altitude
     """
-    R = 6378100
-    d = 1 + 1/(ve_v0**2-1)
-    if d > 0:
-        raise ValueError(f"invalid value {ve_v0} > 0")
-    dmax_R = d/R
-
-    return ...
+    alpha_max = 1 / ((ve_v0) ** 2 - 1)
+    #ve_v0 cannot be 1
+    return alpha_max
 
 
 def min_velocity_ratio(alpha):
@@ -167,13 +155,14 @@ def min_velocity_ratio(alpha):
     for a given target peak altitude ratio.
     Perameters
     ----------
-    alpha = 0
-        You'll get the smallest escape velocity if the object is leaving horizontally
+    sin(x) = pi/2
+        At this angle we will need the more initial velocity  
 
     """
-    #add your code here
+    p = (((1 + alpha) ** 2) - 1) / (alpha + (alpha ** 2))
+    ve_v0_min = np.sqrt(p)
 
-    return ...
+    return ve_v0_min
 
 
 def max_velocity_ratio(alpha):
@@ -181,9 +170,11 @@ def max_velocity_ratio(alpha):
     for a given target peak altitude ratio.
     Perameters
     ----------
-    alpha = pi/2
+    sin(x) = 0
+        Least amount of initial velocity to get far
 
     """
-    #add your code here
+    o = (1 + alpha) / alpha
+    ve_v0_max = np.sqrt(o)
 
-    return ...
+    return ve_v0_max
