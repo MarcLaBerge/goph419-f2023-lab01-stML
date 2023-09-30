@@ -48,7 +48,9 @@ def arcsin(x):
 
     return np.sqrt(result) * sign
 
-#####################################
+
+
+######################################################################################
 def launch_angle(ve_v0, alpha):
     """Calculate the launch angle from vertical given
     velocity ratio and target altitude ratio.
@@ -80,6 +82,8 @@ def launch_angle(ve_v0, alpha):
     return y
 
 
+
+######################################################################################
 def launch_angle_range(ve_v0, alpha, tol_alpha):
     """Calculate the range of launch angles for a given
     velocity ratio, target altitude ratio, and tolerance.
@@ -113,6 +117,8 @@ def launch_angle_range(ve_v0, alpha, tol_alpha):
     return phi_range
 
 
+
+#############################################################################################
 def min_altitude_ratio(ve_v0):
     """Utility function for computing minimum possible peak altitude ratio
     for a given velocity ratio.
@@ -132,6 +138,8 @@ def min_altitude_ratio(ve_v0):
     return alpha_min
 
 
+
+##############################################################################################
 def max_altitude_ratio(ve_v0):
     """Utility function for computing maximum possible peak altitude ratio
     for a given velocity ratio.
