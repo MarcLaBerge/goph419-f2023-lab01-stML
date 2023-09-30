@@ -22,33 +22,33 @@ def arcsin(x):
     if x >1.0:
         raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     
-    eps_s = 0.5e-5 #exponent it the amount of decimal place
+    eps_s = 0.5e-5 #exponent it the amount of decimal place of percition we want
     if x < eps_s:
         return sign * x 
     
     #starting values
     two_x = 2.0 * x 
-    n = 0
-    max_n = 50 
-    fact_n = 1 #Not 0 or could cause problems
-    fact_2n = 1 #Not 0 or could cause problems
+    k = 0
+    max_k = 50 
+    fact_k = 1 #Not 0 or could cause problems
+    fact_2k = 1 #Not 0 or could cause problems
     result = 0.0 #Result starts at 0
     eps_a = 1.0 #Approx relative error starts at 1
     #taylor series continues
-    while eps_a > eps_s and n < max_n: #Breaking it down 
-        n += 1
-        two_n = 2.0* n
-        fact_n *= n
-        fact_2n *= two_n * (two_n - 1)
+    while eps_a > eps_s and k < max_k: #Breaking it down 
+        k += 1
+        two_k = 2.0* k
+        fact_k *= k
+        fact_2k *= two_k * (two_k - 1)
 
-        term = 0.5 * (two_x ** two_n) / (n**2 * fact_2n / fact_n)
+        term = 0.5 * (two_x ** two_k) / (k ** 2 * fact_2k / fact_k)
         result += term
 
-        eps_a = term / result 
+        eps_a = term / result #term is the difference between the sum and 
 
     return np.sqrt(result) * sign
 
-
+#####################################
 def launch_angle(ve_v0, alpha):
     """Calculate the launch angle from vertical given
     velocity ratio and target altitude ratio.
