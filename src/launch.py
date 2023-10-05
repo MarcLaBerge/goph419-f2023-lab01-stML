@@ -19,8 +19,8 @@ def arcsin(x):
     if x < 0.0:
         sign = -1.0
         x = np.abs(x) #Don't have to worry about the negative(for the sqrt) if we take it away and bring it back later
-    if x >1.0:
-        raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
+    #if x > 1.0:
+        #raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     
     eps_s = 0.5e-5 #exponent it the amount of decimal place of percition we want
     if x < eps_s:
@@ -29,19 +29,19 @@ def arcsin(x):
     #starting values
     two_x = 2.0 * x 
     k = 0
-    max_k = 50 
-    fact_k = 1 #Not 0 or could cause problems
-    fact_2k = 1 #Not 0 or could cause problems
-    result = 0.0 #Result starts at 0
-    eps_a = 1.0 #Approx relative error starts at 1
+    max_k = 100
+    fact_k = 1 
+    fact_2k = 1 
+    result = 0.0 
+    eps_a = 1.0 
     #taylor series continues
     while eps_a > eps_s and k < max_k: #Breaking it down 
         k += 1
-        two_k = 2.0* k
+        two_k = 2.0 * k
         fact_k *= k
         fact_2k *= two_k * (two_k - 1)
 
-        term = 0.5 * (two_x ** two_k) / (k ** 2 * fact_2k / fact_k)
+        term = 0.5 * (two_x ** two_k) / ((k ** 2) * fact_2k / (fact_k ** 2))
         result += term
 
         eps_a = term / result #term is the difference between the sum and 
@@ -69,8 +69,9 @@ def launch_angle(ve_v0, alpha):
     """
     #Value what don't work
     #relative velocities
-    if ve_v0 > 1.0: 
-        raise ValueError(f"invalid value ve_v0 = {ve_v0} > 1.0") #if we start with less velocity than needed, we can't escape
+
+    #if ve_v0 > 1.0: 
+        #raise ValueError(f"invalid value ve_v0 = {ve_v0} > 1.0") #if we start with less velocity than needed, we can't escape
     
     #break up equation 17
     q = 1.0 - (alpha / (1.0 + alpha)) * ve_v0**2
@@ -80,7 +81,7 @@ def launch_angle(ve_v0, alpha):
     y = arcsin(x)
 
     return y
-
+    
 
 
 ######################################################################################
@@ -100,19 +101,22 @@ def launch_angle_range(ve_v0, alpha, tol_alpha):
 
     Returns
     -------
-    float:
-        launch angle range will be given in radians
+    phi_range as an array to store minimum and maximum launch angles
     """
+    phi_range = []
+
+    #defining the max and min altitudes
     max_altitude = (1 + tol_alpha) * alpha
     min_altitude = (1 - tol_alpha) * alpha
 
     #min launch angle from max altitude
-    min_angle = launch_angle(ve_v0,max_altitude)
+    min_angle = launch_angle(ve_v0, max_altitude)
+    phi_range.append(min_angle)
                                                       #launch angle uses arcsin (implementation of equation 17 and 18)
     #max launch angle from min altitude
-    max_angle = launch_angle(ve_v0,min_altitude)
+    max_angle = launch_angle(ve_v0, min_altitude)
+    phi_range.append(max_angle)
     
-    phi_range = np.array(min_angle,max_angle)
     
     return phi_range
 
@@ -125,14 +129,14 @@ def min_altitude_ratio(ve_v0):
     Perameters
     ----------
     sin(x) = 1 (x=pi/2)
-        Angle when leaving is horizontal
+        Angle when launch is horizontal
 
     Reterns
     -------
     float :
         min_altitude_ratio will be given in ratio no units
     """
-    alpha_min = (-(ve_v0) ** 2 + 2) / ((ve_v0) ** 2 - 1)
+    alpha_min = ((ve_v0) ** 2 - 2) / ((ve_v0) ** 2 - 1)
 
     #ve_v0  cannot be 0 (0 escape velocity?) and cannot be 1
     return alpha_min
@@ -157,7 +161,7 @@ def max_altitude_ratio(ve_v0):
     #ve_v0 cannot be 1
     return alpha_max
 
-
+##################################################################################
 def min_velocity_ratio(alpha):
     """Utility function for computing minimum possible velocity ratio
     for a given target peak altitude ratio.
@@ -167,12 +171,12 @@ def min_velocity_ratio(alpha):
         At this angle we will need the more initial velocity  
 
     """
-    p = (((1 + alpha) ** 2) - 1) / (alpha + (alpha ** 2))
+    p = ((alpha + 2) / (alpha + 1)) ** (1/2)
     ve_v0_min = np.sqrt(p)
 
     return ve_v0_min
 
-
+##################################################################################
 def max_velocity_ratio(alpha):
     """Utility function for computing maximum possible velocity ratio
     for a given target peak altitude ratio.
@@ -182,7 +186,7 @@ def max_velocity_ratio(alpha):
         Least amount of initial velocity to get far
 
     """
-    o = (1 + alpha) / alpha
+    o = ((1 + alpha) / alpha ) ** (1/2)
     ve_v0_max = np.sqrt(o)
 
     return ve_v0_max
