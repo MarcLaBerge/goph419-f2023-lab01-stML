@@ -30,7 +30,7 @@ def main():
     min_alpha_angle = []
     max_alpha_angle = []
     #set the range of acceptable alphas calculated from setting the boundary conditions and rearanging for max alpha
-    alpha_range = np.arange(0, max_altitude_ratio(ve_v0), 0.05)                   #Look at the code for the min --- should equal 0 when ve_v0 is 2
+    alpha_range = np.arange(min_altitude_ratio(ve_v0), max_altitude_ratio(ve_v0), 0.05)                   #Look at the code for the min --- should equal 0 when ve_v0 is 2
     for i in alpha_range:
         y = launch_angle_range(ve_v0, i, tol_alpha)
         min_alpha_angle.append(y[0])
