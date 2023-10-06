@@ -136,9 +136,8 @@ def min_altitude_ratio(ve_v0):
     float :
         min_altitude_ratio will be given in ratio no units
     """
-    alpha_min = ((ve_v0) ** 2 - 2) / ((ve_v0) ** 2 - 1)
+    alpha_min = 0
 
-    #ve_v0  cannot be 0 (0 escape velocity?) and cannot be 1
     return alpha_min
 
 
@@ -157,8 +156,8 @@ def max_altitude_ratio(ve_v0):
         max_altitude_ratio will be given in ratio no units
 
     """
-    alpha_max = 1 / ((ve_v0) ** 2 - 1)
-    #ve_v0 cannot be 1
+    alpha_max = ((ve_v0) ** 2 - 2) / ((ve_v0) ** 2 - 1)
+   
     return alpha_max
 
 ##################################################################################
