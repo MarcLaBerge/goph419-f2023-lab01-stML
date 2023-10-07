@@ -49,6 +49,8 @@ def main():
     plt.show()
     #plt.savefig("Graphs of Launch Angle vs constant Alpha and ve_v0 respectively")
     
+
+
     #holding alpha and tol_alpha constant
     alpha = 0.25
     tol_alpha = 0.04
@@ -56,7 +58,7 @@ def main():
     min_ve_v0_angle = []
     max_ve_v0_angle = []
 
-    ve_v0_range = np.arange(1.34,2.24, 0.025) #Look at the coded functions, they give these numbers but don't go through the code
+    ve_v0_range = np.arange(min_velocity_ratio(alpha),max_velocity_ratio(alpha), 0.025) #Look at the coded functions, they give these numbers but don't go through the code
     for i in ve_v0_range:
         y = launch_angle_range(i, alpha, tol_alpha)
         min_ve_v0_angle.append(y[0])

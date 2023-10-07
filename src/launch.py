@@ -156,7 +156,7 @@ def max_altitude_ratio(ve_v0):
         max_altitude_ratio will be given in ratio no units
 
     """
-    alpha_max = ((ve_v0) ** 2 - 2) / ((ve_v0) ** 2 - 1)
+    alpha_max = - (1 / (1 - (ve_v0) ** 2))
    
     return alpha_max
 
@@ -168,9 +168,14 @@ def min_velocity_ratio(alpha):
     ----------
     sin(x) = pi/2
         At this angle we will need the more initial velocity  
+    
+    Return
+    ------
+    float:
+        min_velocity_ratio will be given with no units
 
     """
-    p = ((alpha + 2) / (alpha + 1)) ** (1/2)
+    p = ((alpha + 2) / (alpha + 1))
     ve_v0_min = np.sqrt(p)
 
     return ve_v0_min
@@ -184,8 +189,17 @@ def max_velocity_ratio(alpha):
     sin(x) = 0
         Least amount of initial velocity to get far
 
+    Return
+    ------
+    float:
+        max_velocity_ratio will be given with no units
+
     """
-    o = ((1 + alpha) / alpha ) ** (1/2)
+    o = ((1 + alpha) / alpha )
     ve_v0_max = np.sqrt(o)
 
     return ve_v0_max
+
+alpha = 0.25
+y = min_velocity_ratio(alpha)
+print(y)
