@@ -40,18 +40,17 @@ def main():
     print("Minimum angles: ", min_alpha_angle)
 
     plt.subplot(2,1,1)
-
+    
     plt.plot(alpha_range, min_alpha_angle, label = "Minimum Launch Angle")
     plt.plot(alpha_range, max_alpha_angle, label = "Maximum Launch Angle")
     plt.xlabel("Alpha")
     plt.ylabel("Launch Angle")
-    plt.title("The Minimum and Maximum Launch Angles for a fixed ve_v0 and tol_alpha against Alpha")
+    plt.title("The Min and Max Launch Angles for a fixed ve_v0 and tol_alpha\n against Alpha")
     plt.legend()
+   
     
-    #plt.savefig("Graphs of Launch Angle vs constant Alpha and ve_v0 respectively")
     
-
-
+    
     #holding alpha and tol_alpha constant
     alpha = 0.25
     tol_alpha = 0.04
@@ -74,18 +73,18 @@ def main():
     plt.plot(ve_v0_range, max_ve_v0_angle, label = "Maximum Launch Angle")
     plt.xlabel("ve_v0")
     plt.ylabel("Launch Angle")
-    plt.title("The Minimum and Maximum Launch Angles for a fixed alpha and tol_alpha against ve_v0")
+    plt.title("The Min and Max Launch Angles for a fixed alpha and tol_alpha\n against ve_v0")
     plt.legend()
-    plt.savefig("Graphs of Lanuch Angle vs alpha and ve_v0")
+
+
+    plt.tight_layout(pad=2.0)
+    #plt.show()
+    plt.savefig("Graphs of Launch Angle vs alpha and ve_v0")
     
         
 
 
-    
 
-
-
-    # plot launch angle range for a fixed target altitude
     
 
 if __name__ == "__main__":
