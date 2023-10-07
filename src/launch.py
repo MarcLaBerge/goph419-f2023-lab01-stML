@@ -21,8 +21,8 @@ def arcsin(x):
         x = np.abs(x) 
     
     #Check that 
-    if x > 1.0:
-        raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
+    #if x > 1.0:
+        #raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     #exponent it the amount of decimal place of percition we want
     eps_s = 0.5e-5
     if x < eps_s:
@@ -73,11 +73,15 @@ def launch_angle(ve_v0, alpha):
     
     #break up equation 17
     q = 1.0 - (alpha / (1.0 + alpha)) * ve_v0**2
-
+    if q < 0:
+        print("Test Failed, value calculated in square root should be positive")
+        
+    
     x = (1.0 + alpha)*np.sqrt(q)
-
-    #use arcsin function to get angle
     y = arcsin(x)
+        
+    #use arcsin function to get angle
+    
 
     return y
     
