@@ -18,11 +18,13 @@ def arcsin(x):
     sign = 1.0
     if x < 0.0:
         sign = -1.0
-        x = np.abs(x) #Don't have to worry about the negative(for the sqrt) if we take it away and bring it back later
-    #if x > 1.0:
-        #raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
+        x = np.abs(x) 
     
-    eps_s = 0.5e-5 #exponent it the amount of decimal place of percition we want
+    #Check that 
+    if x > 1.0:
+        raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
+    #exponent it the amount of decimal place of percition we want
+    eps_s = 0.5e-5
     if x < eps_s:
         return sign * x 
     
@@ -34,8 +36,9 @@ def arcsin(x):
     fact_2k = 1 
     result = 0.0 
     eps_a = 1.0 
+
     #taylor series continues
-    while eps_a > eps_s and k < max_k: #Breaking it down 
+    while eps_a > eps_s and k < max_k: 
         k += 1
         two_k = 2.0 * k
         fact_k *= k
@@ -44,7 +47,7 @@ def arcsin(x):
         term = 0.5 * (two_x ** two_k) / ((k ** 2) * fact_2k / (fact_k ** 2))
         result += term
 
-        eps_a = term / result #term is the difference between the sum and 
+        eps_a = term / result 
 
     return np.sqrt(result) * sign
 
@@ -67,17 +70,13 @@ def launch_angle(ve_v0, alpha):
     float 
         Launch angle from vetical in radians
     """
-    #Value what don't work
-    #relative velocities
-
-    #if ve_v0 > 1.0: 
-        #raise ValueError(f"invalid value ve_v0 = {ve_v0} > 1.0") #if we start with less velocity than needed, we can't escape
     
     #break up equation 17
     q = 1.0 - (alpha / (1.0 + alpha)) * ve_v0**2
 
     x = (1.0 + alpha)*np.sqrt(q)
 
+    #use arcsin function to get angle
     y = arcsin(x)
 
     return y
@@ -103,18 +102,30 @@ def launch_angle_range(ve_v0, alpha, tol_alpha):
     -------
     phi_range as an array to store minimum and maximum launch angles
     """
-    phi_range = []
+    #import the function "tests" to check the launch angle range
+    from tests import test
+    y = test(ve_v0,alpha)
 
     #defining the max and min altitudes
     max_altitude = (1 + tol_alpha) * alpha
     min_altitude = (1 - tol_alpha) * alpha
 
+    #creating an array for the values
+    phi_range = []
+
+
+####launch angle uses arcsin (implementation of equation 17 and 18)
     #min launch angle from max altitude
     min_angle = launch_angle(ve_v0, max_altitude)
+
+        #add to array
     phi_range.append(min_angle)
-                                                      #launch angle uses arcsin (implementation of equation 17 and 18)
+    
+
     #max launch angle from min altitude
     max_angle = launch_angle(ve_v0, min_altitude)
+
+        #add to array
     phi_range.append(max_angle)
     
     
@@ -136,6 +147,8 @@ def min_altitude_ratio(ve_v0):
     float :
         min_altitude_ratio will be given in ratio no units
     """
+    #in equation 17, solve for alpha when sin(phi) = 0 
+        #the smallest alpha = 0
     alpha_min = 0
 
     return alpha_min
@@ -150,12 +163,14 @@ def max_altitude_ratio(ve_v0):
     ----------
     sin(x) = 0
         Angle when leaving is vertical
+        In the sin function created earlier, I use x, x = phi
     Reterns
     -------
     float:
         max_altitude_ratio will be given in ratio no units
 
     """
+    #in equation 17, solve for alpha when sin(phi) = 1
     alpha_max = - (1 / (1 - (ve_v0) ** 2))
    
     return alpha_max
@@ -167,14 +182,15 @@ def min_velocity_ratio(alpha):
     Perameters
     ----------
     sin(x) = pi/2
-        At this angle we will need the more initial velocity  
-    
+        At this angle we will need the more initial velocity which gives a smaller ratio 
+        In the sin function created earlier, I use x, x = phi
     Return
     ------
     float:
         min_velocity_ratio will be given with no units
 
     """
+    #in equation 17, solve for ve_v0 when sin(phi) = 1
     p = ((alpha + 2) / (alpha + 1))
     ve_v0_min = np.sqrt(p)
 
@@ -187,7 +203,8 @@ def max_velocity_ratio(alpha):
     Perameters
     ----------
     sin(x) = 0
-        Least amount of initial velocity to get far
+        At this angle we will need less initial velocity which gives a bigger ratio
+        In the sin function created earlier, I use x, x = phi
 
     Return
     ------
@@ -195,11 +212,9 @@ def max_velocity_ratio(alpha):
         max_velocity_ratio will be given with no units
 
     """
+    #in equation 17, solve for ve_v0 when sin(phi) = 0
     o = ((1 + alpha) / alpha )
     ve_v0_max = np.sqrt(o)
 
     return ve_v0_max
 
-alpha = 0.25
-y = min_velocity_ratio(alpha)
-print(y)
