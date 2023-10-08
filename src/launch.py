@@ -21,8 +21,8 @@ def arcsin(x):
         x = np.abs(x) 
     
     #Check that 
-    #if x > 1.0:
-        #raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
+    if x > 1:
+        raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     #exponent it the amount of decimal place of percition we want
     eps_s = 0.5e-5
     if x < eps_s:
