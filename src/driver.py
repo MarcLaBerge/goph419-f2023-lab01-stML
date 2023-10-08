@@ -45,7 +45,7 @@ def main():
     plt.plot(alpha_range, max_alpha_angle, label = "Maximum Launch Angle")
     plt.xlabel("Alpha")
     plt.ylabel("Launch Angle")
-    plt.title("The Min and Max Launch Angles for a fixed ve_v0 and tol_alpha\n against Alpha")
+    plt.title("The Min and Max Launch Angles for a fixed ve_v0 = 2\n and tol_alpha = 0.04 against Alpha")
     plt.legend()
    
     
@@ -73,7 +73,7 @@ def main():
     plt.plot(ve_v0_range, max_ve_v0_angle, label = "Maximum Launch Angle")
     plt.xlabel("ve_v0")
     plt.ylabel("Launch Angle")
-    plt.title("The Min and Max Launch Angles for a fixed alpha and tol_alpha\n against ve_v0")
+    plt.title("The Min and Max Launch Angles for a fixed alpha = 0.25\n and tol_alpha = 0.04 against ve_v0")
     plt.legend()
 
 

@@ -165,7 +165,7 @@ def max_altitude_ratio(ve_v0):
     for a given velocity ratio.
     Perameters
     ----------
-    sin(x) = 0
+    sin(x) = 0 (x=0)
         Angle when leaving is vertical
         In the sin function created earlier, I use x, x = phi
     Reterns
@@ -185,7 +185,7 @@ def min_velocity_ratio(alpha):
     for a given target peak altitude ratio.
     Perameters
     ----------
-    sin(x) = pi/2
+    sin(x) = 1 (x=pi/2)
         At this angle we will need the more initial velocity which gives a smaller ratio 
         In the sin function created earlier, I use x, x = phi
     Return
@@ -206,7 +206,7 @@ def max_velocity_ratio(alpha):
     for a given target peak altitude ratio.
     Perameters
     ----------
-    sin(x) = 0
+    sin(x) = 0 (x=0)
         At this angle we will need less initial velocity which gives a bigger ratio
         In the sin function created earlier, I use x, x = phi
 
