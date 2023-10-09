@@ -20,7 +20,7 @@ def arcsin(x):
         sign = -1.0
         x = np.abs(x) 
     
-    #Check that 
+    #Check that x is less than 1 (Tol_alpha will push one value just over 1, so I've added a small push to the boundary)
     if x > 1.001:
         raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     #exponent it the amount of decimal place of percition we want
