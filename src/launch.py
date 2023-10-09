@@ -21,7 +21,7 @@ def arcsin(x):
         x = np.abs(x) 
     
     #Check that 
-    if x > 1:
+    if x > 1.001:
         raise ValueError(f"input abs({sign * x}) > 1.0 is out of range")
     #exponent it the amount of decimal place of percition we want
     eps_s = 0.5e-5
@@ -151,7 +151,7 @@ def min_altitude_ratio(ve_v0):
     float :
         min_altitude_ratio will be given in ratio no units
     """
-    #in equation 17, solve for alpha when sin(phi) = 0 
+    #in equation 17, solve for alpha when sin(phi) = 1 
         #the smallest alpha = 0
     alpha_min = 0
 
@@ -174,7 +174,7 @@ def max_altitude_ratio(ve_v0):
         max_altitude_ratio will be given in ratio no units
 
     """
-    #in equation 17, solve for alpha when sin(phi) = 1
+    #in equation 17, solve for alpha when sin(phi) = 0
     alpha_max = - (1 / (1 - (ve_v0) ** 2))
    
     return alpha_max
